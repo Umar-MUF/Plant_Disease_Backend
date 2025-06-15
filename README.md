@@ -1,0 +1,2 @@
+-> FastApi code with all requirements and  model of deep learning 
+-> Predicts the disease if given according to data on which the model is trained.
