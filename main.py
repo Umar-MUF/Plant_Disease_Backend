@@ -99,13 +99,22 @@ async def predict(file: UploadFile = File(...)):
         img = np.expand_dims(img, axis=0)
 
         prediction = model.predict(img)
+        confidence = float(np.max(prediction))
         predicted_index = np.argmax(prediction)
         predicted_class = class_names[predicted_index]
+
+        if confidence < 0.85:
+            return JSONResponse(
+                content={"error": f"Low confidence ({confidence:.2f}). Please upload a valid plant leaf image."},
+                status_code=400,
+            )
+        
         medicine = disease_to_medicine.get(predicted_class, "No recommendation found")
 
         return JSONResponse({
             "Disease": predicted_class,
-            "Recommendation": medicine
+            "Recommendation": medicine,
+            "Confidence": f"{confidence:.2f}"
         })
 
     except Exception as e:
