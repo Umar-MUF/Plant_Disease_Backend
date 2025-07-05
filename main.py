@@ -94,7 +94,13 @@ async def predict(file: UploadFile = File(...)):
                 status_code=400
             )
         contents = await file.read()
-        img = Image.open(io.BytesIO(contents)).convert("RGB").resize((128, 128))
+        try:
+            img = Image.open(io.BytesIO(contents)).convert("RGB").resize((128, 128))
+        except Exception:
+            return JSONResponse(
+                content={"error": "Invalid or corrupted image file."},
+                status_code=400
+            )
         img = image.img_to_array(img)
         img = np.expand_dims(img, axis=0)
 
@@ -113,8 +119,7 @@ async def predict(file: UploadFile = File(...)):
 
         return JSONResponse({
             "Disease": predicted_class,
-            "Recommendation": medicine,
-            "Confidence": f"{confidence:.2f}"
+            "Recommendation": medicine
         })
 
     except Exception as e:
