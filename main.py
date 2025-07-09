@@ -29,29 +29,29 @@ model = load_model("Smart_Farming_DL_Model.h5")
 
 # Class names in the same order as training
 class_names = [
-    "Apple___Apple_scab", "Apple___Black_rot", "Apple___Cedar_apple_rust", "Apple___healthy",
+    "Apple___scab", "Apple___Black_rot", "Cedar_apple_rust", "Apple___healthy",
     "Blueberry___healthy", "Cherry_(including_sour)___Powdery_mildew", "Cherry_(including_sour)___healthy",
-    "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot", "Corn_(maize)___Common_rust_",
+    "Corn_(maize)___Cercospora Gray_leaf_spot", "Corn_(maize)___Common_rust_",
     "Corn_(maize)___Northern_Leaf_Blight", "Corn_(maize)___healthy", "Grape___Black_rot",
     "Grape___Esca_(Black_Measles)", "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)", "Grape___healthy",
     "Orange___Haunglongbing_(Citrus_greening)", "Peach___Bacterial_spot", "Peach___healthy",
     "Pepper,_bell___Bacterial_spot", "Pepper,_bell___healthy", "Potato___Early_blight", "Potato___Late_blight",
     "Potato___healthy", "Raspberry___healthy", "Soybean___healthy", "Squash___Powdery_mildew",
     "Strawberry___Leaf_scorch", "Strawberry___healthy", "Tomato___Bacterial_spot", "Tomato___Early_blight",
-    "Tomato___Late_blight", "Tomato___Leaf_Mold", "Tomato___Septoria_leaf_spot", "Tomato___Spider_mites Two-spotted_spider_mite",
-    "Tomato___Target_Spot", "Tomato___Tomato_Yellow_Leaf_Curl_Virus", "Tomato___Tomato_mosaic_virus", "Tomato___healthy"
+    "Tomato___Late_blight", "Tomato___Leaf_Mold", "Tomato___Septoria_leaf_spot", "Tomato___Spider_mites",
+    "Tomato___Target_Spot", "Tomato_Yellow_Leaf_Curl_Virus", "Tomato_mosaic_virus", "Tomato___healthy"
 ]
 
 # Mapping of disease to best medicine
 disease_to_medicine = {
-    "Apple___Apple_scab": "Captan 50% WP spray",
+    "Apple___scab": "Captan 50% WP spray",
     "Apple___Black_rot": "Copper-based fungicides",
-    "Apple___Cedar_apple_rust": "Myclobutanil fungicide",
+    "Cedar_apple_rust": "Myclobutanil fungicide",
     "Apple___healthy": "No treatment needed",
     "Blueberry___healthy": "No treatment needed",
     "Cherry_(including_sour)___Powdery_mildew": "Sulfur-based fungicide",
     "Cherry_(including_sour)___healthy": "No treatment needed",
-    "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot": "Azoxystrobin spray",
+    "Corn_(maize)___Cercospora Gray_leaf_spot": "Azoxystrobin spray",
     "Corn_(maize)___Common_rust_": "Fungicide with tebuconazole",
     "Corn_(maize)___Northern_Leaf_Blight": "Trifloxystrobin spray",
     "Corn_(maize)___healthy": "No treatment needed",
@@ -77,10 +77,10 @@ disease_to_medicine = {
     "Tomato___Late_blight": "Mancozeb fungicide weekly",
     "Tomato___Leaf_Mold": "Copper spray or baking soda solution",
     "Tomato___Septoria_leaf_spot": "Fungicide like chlorothalonil",
-    "Tomato___Spider_mites Two-spotted_spider_mite": "Insecticidal soap or neem oil",
+    "Tomato___Spider_mites": "Insecticidal soap or neem oil",
     "Tomato___Target_Spot": "Azoxystrobin fungicide",
-    "Tomato___Tomato_Yellow_Leaf_Curl_Virus": "No cure, use resistant seeds",
-    "Tomato___Tomato_mosaic_virus": "Remove infected plants, clean tools",
+    "Tomato_Yellow_Leaf_Curl_Virus": "No cure, use resistant seeds",
+    "Tomato_mosaic_virus": "Remove infected plants, clean tools",
     "Tomato___healthy": "No treatment needed"
 }
 
@@ -109,9 +109,9 @@ async def predict(file: UploadFile = File(...)):
         predicted_index = np.argmax(prediction)
         predicted_class = class_names[predicted_index]
 
-        if confidence < 0.85:
+        if confidence < 0.89:
             return JSONResponse(
-                content={"error": f"Low confidence ({confidence:.2f}). Please upload a valid plant leaf image."},
+                content={"error":" Please upload a valid plant leaf image."},
                 status_code=400,
             )
         
